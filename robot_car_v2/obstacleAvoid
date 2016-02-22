@@ -1,0 +1,15 @@
+void loop() { 
+
+  ////////////////////////////////////////////////////
+  //when obstacle detected, turn car left, stop for half a second, then go forward again.
+   if(!us_sensor.measure()){
+    carDirection(FORWARD);    
+  }
+  
+  else{
+    carStop();
+    carTurn(ForwardLEFT);
+    delay(500); 
+  }
+  
+}

@@ -1,0 +1,11 @@
+
+void loop() { 
+
+  ////////////////////////////////////////////////////
+  //put hand in front of sensor, activate car for bring period.
+   if(us_sensor.measure()){
+    carDirection(FORWARD);
+    delay(500);
+    carStop();    
+  }
+}
