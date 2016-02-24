@@ -1,3 +1,6 @@
+#include "Arduino.h"
+#include "bluetooth.h"
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -15,11 +18,11 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <SoftwareSerial.h>
+
 
 // Set to match your hardware
-int RX_PIN = 7;
-int TX_PIN = 8;
+int RX_PIN = 4;
+int TX_PIN = 5;
 
 
 // Serial interface for the BlueSMiRF
@@ -32,7 +35,7 @@ String bluetooth_tx_buffer = "";
 // Delimiter used to separate messages
 char DELIMITER = '\n';
 
-void setup() {
+void bluetooth::SETUP() {
   
   // Start USB communication
   Serial.begin(9600);
@@ -46,7 +49,7 @@ void setup() {
   Serial.println("Initialized.");
 }
 
-void set_bluetooth_baudrate() {
+void bluetooth::set_bluetooth_baudrate() {
   
   // Open BlueSMiRF at default baudrate
   bluetooth.begin(115200);
@@ -65,7 +68,7 @@ void set_bluetooth_baudrate() {
 /**
  * Called when a complete message is received.
  */
-void gotMessage(String message) {
+void bluetooth::gotMessage(String message) {
   
   Serial.println("[RECV] " + message);
   bluetooth.print
@@ -76,7 +79,7 @@ void gotMessage(String message) {
 /**
  * Finds complete messages from the rx buffer.
  */
-void parseReadBuffer() {
+void bluetooth::parseReadBuffer() {
   
   // Find the first delimiter in the buffer
   int inx = bluetooth_rx_buffer.indexOf(DELIMITER);
@@ -94,10 +97,10 @@ void parseReadBuffer() {
   gotMessage(s);
   
   // Look for more complete messages
- // parseReadBuffer();
+  parseReadBuffer();
 }
 
-void parseWriteBuffer() {
+void bluetooth::parseWriteBuffer() {
   
   // Find the first delimiter in the buffer
   int inx = bluetooth_tx_buffer.indexOf(DELIMITER);
@@ -116,35 +119,16 @@ void parseWriteBuffer() {
   Serial.print("[SENT] " + message);
   
   // Look for more
- // parseWriteBuffer();
+  parseWriteBuffer();
 }
 
 /**
  * Continuously sends messages sent from USB and reads in messages from
  * the Bluetooth connection.
  */
-void loop() {
-  
-  // Forward anything received via USB to bluetooth
-  if(Serial.available()) {
-    
-    while(Serial.available()) {
-      bluetooth_tx_buffer += (char)Serial.read();
-    }
-    
-    // Look for complete messages
-    parseWriteBuffer();
-  }
-  
-  // Add bytes received over bluetooth to the buffer
-  if(bluetooth.available()) {
-    
-    while(bluetooth.available()) {
-      bluetooth_rx_buffer += (char)bluetooth.read();
-    }
-    // Look for complete messages
-    parseReadBuffer();
-  }
-}
+ 
+/*
 
+
+*/
 

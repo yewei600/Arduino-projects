@@ -4,12 +4,12 @@
 #define FORWARD 0
 #define BACKWARD 1
 
-const int cLeft1 = 2; // connected to pin 7 on the H-bridge
-const int cLeft2 = 3; // connected to pin 2 on the H-bridge
-const int cRight1 = 4; // connected to pin 10 on the H-bridge
-const int cRight2 = 5; // connected to pin 15 on the H-bridge
-const int enLeft = 10;   // connected to pin 1 on the H-bridge
-const int enRight = 11;  // connected to pin 9 on the H-bridge
+const int cLeft1 = 5; // connected to pin 7 on the H-bridge
+const int cLeft2 = 6; // connected to pin 2 on the H-bridge
+const int cRight1 = 9; // connected to pin 10 on the H-bridge
+const int cRight2 = 10; // connected to pin 15 on the H-bridge
+const int enLeft = 2;   // connected to pin 1 on the H-bridge
+const int enRight = 3;  // connected to pin 9 on the H-bridge
 
 // create some variables to hold values from your inputs
 int onOffSwitchState = 0;  // current state of the On/Off switch
