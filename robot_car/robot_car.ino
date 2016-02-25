@@ -28,30 +28,24 @@ SoftwareSerial bluetooth(RX_PIN, TX_PIN);
 String bluetooth_rx_buffer = "";
 String bluetooth_tx_buffer = "";
 
-bool goForward = false;
-bool goBackward = false;
-
+String lastCarDirection = "";
 
 // Delimiter used to separate messages
 char DELIMITER = '\n';
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 void setup() {
   Serial.begin(9600);
- 
+  bluetooth.begin(9600);
   us_sensor.SETUP();
   mLeft.SETUP();
   mRight.SETUP();
-  
-  //////////////////////////////////////////////////////////////////////////////////////////////////////
-  bluetooth.begin(9600);
-  //////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
   Serial.println("Initialized.");
   delay(1000);
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 void carDirection(int dir){
   if(dir==FORWARD){
@@ -90,45 +84,42 @@ void carTurn(int dir){
    carStop();
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-
 /**
  * Called when a complete message is received.
  */
-void gotMessage(String message) {
+void gotCommand(String cmd) {
   
   //Serial.println("[RECV] " + message);
  // bluetooth.println("The number version "+toInt(message));
   // Do something!
   
   //robot control logic
-  if(message=="left"){
+  if(cmd=="left"){
     //carStop();
     carTurn(ForwardLEFT);
-    Serial.println("received left!!!!");
+    bluetooth.println("going left!");
+    
   }
-  else if(message=="right"){
+  else if(cmd=="right"){
     //carStop();
     carTurn(ForwardRIGHT);  
-    Serial.println("received right!!!");  
+    bluetooth.println("going right!");  
   }
-  else if(message=="forward"){
+  else if(cmd=="forward"){
        carDirection(FORWARD);
+       bluetooth.println("going forward!");
   }
-  else if(message=="backward"){
+  else if(cmd=="backward"){
       carDirection(BACKWARD);
+       bluetooth.println("going backward!");
   }
-  else if(message="stop"){
+  else if(cmd="stop"){
      carStop();
+     bluetooth.println("robot stopped!");
   }
-  
 }
 
 /**
@@ -149,7 +140,7 @@ void parseReadBuffer() {
   bluetooth_rx_buffer = bluetooth_rx_buffer.substring(inx + 1);
   
   // Process the message
-  gotMessage(s);
+  gotCommand(s);
 }
 
 void parseWriteBuffer() {
@@ -186,7 +177,7 @@ void parseWriteBuffer() {
 void loop() {
   
   // Forward anything received via USB to bluetooth
-  if(Serial.available()) {
+  /*if(Serial.available()) {
     
     while(Serial.available()) {
       bluetooth_tx_buffer += (char)Serial.read();
@@ -194,7 +185,7 @@ void loop() {
     
     // Look for complete messages
     parseWriteBuffer();
-  }
+  }*/
   
   // Add bytes received over bluetooth to the buffer
   if(bluetooth.available()) {
@@ -205,14 +196,7 @@ void loop() {
     // Look for complete messages
     parseReadBuffer();
   }
-  
-/*  if(goForward){
-   carDirection(FORWARD); 
-  }
-  else if(goBackward){
-   carDirection(BACKWARD); 
-  }
-  */
+ 
 }
 
 

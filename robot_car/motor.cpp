@@ -51,7 +51,6 @@ void motor::spin(int dir){
     digitalWrite(cPin1, LOW);
     digitalWrite(cPin2, HIGH);
   }
-  
     //analogWrite(enPin, HIGH);
    digitalWrite(enPin, HIGH); 
 }
@@ -59,8 +58,9 @@ void motor::spin(int dir){
 
 void motor::stopspin(){  
    //analogWrite(enPin,0);
-   digitalWrite(enPin, LOW);
-   //Serial.println("disabled");
+    digitalWrite(cPin1, LOW);
+    digitalWrite(cPin2, LOW);
+    digitalWrite(enPin, LOW);
 }
 
 motor mLeft = motor(cLeft1,cLeft2,enLeft);
