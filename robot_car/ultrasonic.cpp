@@ -1,9 +1,9 @@
 #include "Arduino.h"
 #include "ultrasonic.h"
 
-const int buzzer = 12;
-const int triggerPin = 6; //triggering on pin 6
-const int echoPin = 7; //echo on pin 7
+const int buzzer = 11;
+const int triggerPin = 12; //triggering on pin 12
+const int echoPin = 13; //echo on pin 13
 int duration, distance;
 
 //ultrasonic
@@ -41,7 +41,7 @@ bool ultrasonic::measure(){
     
     Serial.println(" "); //just printing to a new line
     
-    if (distance < 35){
+    if (distance < 5){
         
         digitalWrite(buzzer,HIGH);
         
